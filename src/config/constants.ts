@@ -4,8 +4,9 @@ export const IS_PRODUCTION = process.env.NEXT_PUBLIC_IS_PRODUCTION === 'true'
 export const IS_DEV = process.env.NODE_ENV === 'development'
 
 export const GATEWAY_URL_PRODUCTION =
-  process.env.NEXT_PUBLIC_GATEWAY_URL_PRODUCTION || 'https://safe-client.safe.global'
-export const GATEWAY_URL_STAGING = process.env.NEXT_PUBLIC_GATEWAY_URL_STAGING || 'https://safe-client.staging.5afe.dev'
+  process.env.NEXT_PUBLIC_GATEWAY_URL_PRODUCTION || 'https://gateway.safe.etherlink.com/'
+export const GATEWAY_URL_STAGING =
+  process.env.NEXT_PUBLIC_GATEWAY_URL_STAGING || 'https://gateway.staging.safe.etherlink.com/'
 
 // Magic numbers
 export const POLLING_INTERVAL = 15_000
@@ -66,12 +67,12 @@ export enum SafeAppsTag {
 }
 
 export const WC_APP_PROD = {
-  id: 111,
-  url: 'https://apps-portal.safe.global/wallet-connect',
+  id: 2,
+  url: 'https://apps.safe.protofire.io/wallet-connect',
 }
 export const WC_APP_DEV = {
-  id: 25,
-  url: 'https://safe-apps.dev.5afe.dev/wallet-connect',
+  id: 2,
+  url: 'https://dev-apps.safe.protofire.io/wallet-connect',
 }
 
 // Help Center
@@ -103,11 +104,11 @@ export const RECOVERY_FEEDBACK_FORM =
   'https://noteforms.com/forms/safe-feedback-form-hk16ds?notionforms=1&utm_source=notionforms'
 
 // Social
-export const DISCORD_URL = 'https://chat.safe.global'
-export const TWITTER_URL = 'https://twitter.com/safe'
+export const DISCORD_URL = 'https://discord.com/invite/etherlink'
+export const TWITTER_URL = 'https://x.com/etherlink'
 
 // Legal
-export const IS_OFFICIAL_HOST = process.env.NEXT_PUBLIC_IS_OFFICIAL_HOST === 'true'
+export const IS_OFFICIAL_HOST = 'true'
 
 // Risk mitigation (Redefine)
 export const REDEFINE_SIMULATION_URL = 'https://dashboard.redefine.net/reports/'

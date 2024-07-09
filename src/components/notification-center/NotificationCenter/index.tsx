@@ -17,10 +17,10 @@ import {
 } from '@/store/notificationsSlice'
 import NotificationCenterList from '@/components/notification-center/NotificationCenterList'
 import UnreadBadge from '@/components/common/UnreadBadge'
-import Link from 'next/link'
+// import Link from 'next/link'
 import { useRouter } from 'next/router'
-import { AppRoutes } from '@/config/routes'
-import SettingsIcon from '@/public/images/sidebar/settings.svg'
+// import { AppRoutes } from '@/config/routes'
+// import SettingsIcon from '@/public/images/sidebar/settings.svg'
 
 import css from './styles.module.css'
 import { trackEvent, OVERVIEW_EVENTS } from '@/services/analytics'
@@ -166,7 +166,7 @@ const NotificationCenter = (): ReactElement => {
                 </Typography>
               </>
             )}
-            <Link
+            {/* <Link
               href={{
                 pathname: AppRoutes.settings.notifications,
                 query: router.query,
@@ -177,7 +177,7 @@ const NotificationCenter = (): ReactElement => {
               <MuiLink className={css.settingsLink} variant="body2" onClick={onSettingsClick}>
                 <SvgIcon component={SettingsIcon} inheritViewBox fontSize="small" /> Push notifications settings
               </MuiLink>
-            </Link>
+            </Link> */}
           </div>
         </Paper>
       </Popover>

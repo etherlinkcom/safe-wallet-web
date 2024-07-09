@@ -118,11 +118,11 @@ const OwnerPolicyStep = ({
           >
             Add new signer
           </Button>
-          <Box p={2} mt={3} sx={{ backgroundColor: 'background.main', borderRadius: '8px' }}>
+          {/* <Box p={2} mt={3} sx={{ backgroundColor: 'background.main', borderRadius: '8px' }}>
             <Typography variant="subtitle1" fontWeight={700} display="inline-flex" alignItems="center" gap={1}>
-              {'Safe{Wallet}'} mobile signer key (optional){' '}
+              Etherlink Safe mobile signer key (optional){' '}
               <Tooltip
-                title="The Safe{Wallet} mobile app allows for the generation of signer keys that you can add to this or an existing Safe Account."
+                title="The Etherlink Safe mobile app allows for the generation of signer keys that you can add to this or an existing Safe Account."
                 arrow
                 placement="top"
               >
@@ -132,7 +132,7 @@ const OwnerPolicyStep = ({
               </Tooltip>
             </Typography>
             <Typography variant="body2">Use your mobile phone as an additional signer key</Typography>
-          </Box>
+          </Box> */}
         </Box>
 
         <Divider />

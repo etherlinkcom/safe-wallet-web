@@ -1,4 +1,4 @@
-import { InputAdornment, Tooltip, SvgIcon, Typography, Box, Divider, Button, Grid } from '@mui/material'
+import { InputAdornment, Tooltip, SvgIcon, Box, Divider, Button, Grid } from '@mui/material'
 import { FormProvider, useForm } from 'react-hook-form'
 import { useMnemonicSafeName } from '@/hooks/useMnemonicName'
 import InfoIcon from '@/public/images/notifications/info.svg'
@@ -14,8 +14,8 @@ import NetworkWarning from '@/components/new-safe/create/NetworkWarning'
 import NameInput from '@/components/common/NameInput'
 import { CREATE_SAFE_EVENTS, trackEvent } from '@/services/analytics'
 import { AppRoutes } from '@/config/routes'
-import MUILink from '@mui/material/Link'
-import Link from 'next/link'
+// import MUILink from '@mui/material/Link'
+// import Link from 'next/link'
 import { useRouter } from 'next/router'
 
 type SetNameStepForm = {
@@ -100,7 +100,7 @@ function SetNameStep({
               </Box>
             </Grid>
           </Grid>
-          <Typography variant="body2" mt={2}>
+          {/* <Typography variant="body2" mt={2}>
             By continuing, you agree to our{' '}
             <Link href={AppRoutes.terms} passHref legacyBehavior>
               <MUILink>terms of use</MUILink>
@@ -110,7 +110,7 @@ function SetNameStep({
               <MUILink>privacy policy</MUILink>
             </Link>
             .
-          </Typography>
+          </Typography> */}
 
           {isWrongChain && <NetworkWarning />}
         </Box>
