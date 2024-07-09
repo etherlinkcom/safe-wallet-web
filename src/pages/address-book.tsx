@@ -6,7 +6,7 @@ const AddressBook: NextPage = () => {
   return (
     <>
       <Head>
-        <title>{'Etherlink Safe – Address book'}</title>
+        <title>Etherlink Safe – Address book</title>
       </Head>
 
       <AddressBookTable />

@@ -10,7 +10,7 @@ const Modules: NextPage = () => {
   return (
     <>
       <Head>
-        <title>{'Etherlink Safe – Settings – Modules'}</title>
+        <title>Etherlink Safe – Settings – Modules</title>
       </Head>
 
       <SettingsHeader />

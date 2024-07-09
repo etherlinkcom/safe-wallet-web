@@ -15,7 +15,7 @@ const Queue: NextPage = () => {
   return (
     <>
       <Head>
-        <title>{'Etherlink Safe – Transaction queue'}</title>
+        <title>Etherlink Safe – Transaction queue</title>
       </Head>
 
       <BatchExecuteHoverProvider>

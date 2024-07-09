@@ -8,7 +8,7 @@ const SecurityLoginPage: NextPage = () => {
   return (
     <>
       <Head>
-        <title>{'Etherlink Safe – Settings – Security & Login'}</title>
+        <title>Etherlink Safe – Settings – Security & Login</title>
       </Head>
 
       <SettingsHeader />

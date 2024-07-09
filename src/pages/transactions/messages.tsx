@@ -26,7 +26,7 @@ const Messages: NextPage = () => {
   return (
     <>
       <Head>
-        <title>{'Etherlink Safe – Messages'}</title>
+        <title>Etherlink Safe – Messages</title>
       </Head>
 
       <TxHeader>

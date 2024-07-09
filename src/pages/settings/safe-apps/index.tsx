@@ -9,7 +9,7 @@ const SafeAppsPermissionsPage: NextPage = () => {
   return (
     <>
       <Head>
-        <title>{'Etherlink Safe – Settings – Safe Apps'}</title>
+        <title>Etherlink Safe – Settings – Safe Apps</title>
       </Head>
 
       <SettingsHeader />

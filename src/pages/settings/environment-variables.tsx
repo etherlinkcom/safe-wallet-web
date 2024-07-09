@@ -7,7 +7,7 @@ const EnvironmentVariablesPage: NextPage = () => {
   return (
     <>
       <Head>
-        <title>{'Etherlink Safe – Settings – Environment variables'}</title>
+        <title>Etherlink Safe – Settings – Environment variables</title>
       </Head>
 
       <SettingsHeader />

@@ -16,7 +16,7 @@ const NotificationsPage: NextPage = () => {
   return (
     <>
       <Head>
-        <title>{'Etherlink Safe – Settings – Notifications'}</title>
+        <title>Etherlink Safe – Settings – Notifications</title>
       </Head>
 
       <SettingsHeader />

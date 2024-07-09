@@ -7,7 +7,7 @@ const Data: NextPage = () => {
   return (
     <>
       <Head>
-        <title>{'Etherlink Safe – Settings – Data'}</title>
+        <title>Etherlink Safe – Settings – Data</title>
       </Head>
 
       <SettingsHeader />

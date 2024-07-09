@@ -29,7 +29,7 @@ const CustomSafeApps: NextPage = () => {
   return (
     <>
       <Head>
-        <title>{'Etherlink Safe – Custom Safe Apps'}</title>
+        <title>Etherlink Safe – Custom Safe Apps</title>
       </Head>
 
       <SafeAppsSDKLink />

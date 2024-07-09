@@ -32,7 +32,7 @@ const Appearance: NextPage = () => {
   return (
     <>
       <Head>
-        <title>{'Etherlink Safe – Settings – Appearance'}</title>
+        <title>Etherlink Safe – Settings – Appearance</title>
       </Head>
 
       <SettingsHeader />

@@ -293,8 +293,7 @@ const SafePrivacyPolicy = () => (
     </ol>
     <ol start={8}>
       <li>
-        When we collect relevant&nbsp;data&nbsp;from the Blockchain to display context information in the
-        {`Etherlink Safe`}
+        When we collect relevant&nbsp;data&nbsp;from the Blockchain to display context information in the Etherlink Safe
         we process:
         <ol>
           <li>your public Wallet address, </li>
@@ -412,9 +411,8 @@ const SafePrivacyPolicy = () => (
       <li>range of managed funds</li>
     </ol>
     <p>
-      In addition, we may take a recording of you while testing Etherlink Safe for internal and external use. The
-      basis for this collection and processing is our legitimate business interest in monitoring and improving our
-      services.
+      In addition, we may take a recording of you while testing Etherlink Safe for internal and external use. The basis
+      for this collection and processing is our legitimate business interest in monitoring and improving our services.
     </p>
     <p>
       The lawful basis for this processing is your consent as provided before participating in user experience research.
@@ -589,10 +587,10 @@ const SafePrivacyPolicy = () => (
     </p>
     <h4>5.5. Fingerprint/Touch ID/ Face ID</h4>
     <p>
-      We enable the user to unlock the Etherlink Safe mobile app via biometrics information (touch ID or face ID).
-      This is a feature of the operating system. We do not store any of this data. Instead, the API of the operating
-      system is used to validate the user input. If you have any further questions you should consult with your
-      preferred mobile device provider or manufacturer.
+      We enable the user to unlock the Etherlink Safe mobile app via biometrics information (touch ID or face ID). This
+      is a feature of the operating system. We do not store any of this data. Instead, the API of the operating system
+      is used to validate the user input. If you have any further questions you should consult with your preferred
+      mobile device provider or manufacturer.
     </p>
     <h4>5.6. Google Firebase</h4>
     <p>
@@ -713,8 +711,8 @@ const SafePrivacyPolicy = () => (
         Spindl
       </a>
       , a measurement and attribution solution for web3 that assists us in comprehending how users interact with
-      different decentralized applications and our app and to enhance your experience with {`Etherlink Safe`}. For
-      enhanced privacy, data is stored for a period of 7 days after which it is securely deleted.
+      different decentralized applications and our app and to enhance your experience with Etherlink Safe. For enhanced
+      privacy, data is stored for a period of 7 days after which it is securely deleted.
     </p>
     <h3 id="section-6">6. Sharing Your Personal Data</h3>
     <p>
@@ -995,7 +993,7 @@ const PrivacyPolicy: NextPage = () => {
   return (
     <>
       <Head>
-        <title>{'Etherlink Safe – Privacy policy'}</title>
+        <title>Etherlink Safe – Privacy policy</title>
       </Head>
 
       <main>{IS_OFFICIAL_HOST && <SafePrivacyPolicy />}</main>

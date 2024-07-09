@@ -604,7 +604,7 @@ const Terms: NextPage = () => {
   return (
     <>
       <Head>
-        <title>{'Etherlink Safe – Terms'}</title>
+        <title>Etherlink Safe – Terms</title>
       </Head>
 
       <main>{IS_OFFICIAL_HOST && <SafeTerms />}</main>
