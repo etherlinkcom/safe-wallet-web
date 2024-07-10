@@ -37,10 +37,10 @@
 }
 
 .logo svg {
-  width: 90px;
+  width: 130px;
   display: block;
   color: var(--color-logo-main);
-  height: 50px;
+  height: 70px;
 }
 
 .logo {
