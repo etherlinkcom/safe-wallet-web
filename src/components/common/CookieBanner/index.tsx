@@ -73,7 +73,7 @@ export const CookieBanner = ({
           <Grid item xs>
             <Typography variant="body2" mb={2}>
               By clicking &quot;Accept all&quot; you agree to the use of the tools listed below and their corresponding
-              cookies. <ExternalLink href={AppRoutes.cookie}>Cookie policy</ExternalLink>
+              cookies.
             </Typography>
 
             <Grid container alignItems="center" gap={4}>
