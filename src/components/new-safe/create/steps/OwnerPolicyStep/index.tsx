@@ -17,6 +17,8 @@ import ArrowBackIcon from '@mui/icons-material/ArrowBack'
 import layoutCss from '@/components/new-safe/create/styles.module.css'
 import { CREATE_SAFE_EVENTS, trackEvent } from '@/services/analytics'
 import OwnerRow from '@/components/new-safe/OwnerRow'
+import { useHasFeature } from '@/hooks/useChains'
+import { FEATURES } from '@/utils/chains'
 
 enum OwnerPolicyStepFields {
   owners = 'owners',
@@ -41,6 +43,7 @@ const OwnerPolicyStep = ({
 }): ReactElement => {
   const wallet = useWallet()
   const addressBook = useAddressBook()
+  const isCounterfactualEnabled = useHasFeature(FEATURES.COUNTERFACTUAL)
   const defaultOwnerAddressBookName = wallet?.address ? addressBook[wallet.address] : undefined
   const defaultOwner: NamedAddress = {
     name: defaultOwnerAddressBookName || wallet?.ens || '',
@@ -173,7 +176,7 @@ const OwnerPolicyStep = ({
             </Grid>
           </Grid>
 
-          {ownerFields.length > 1 && <CounterfactualHint />}
+          {ownerFields.length > 1 && isCounterfactualEnabled && <CounterfactualHint />}
         </Box>
         <Divider />
         <Box className={layoutCss.row}>
