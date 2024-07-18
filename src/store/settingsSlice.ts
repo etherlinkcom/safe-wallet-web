@@ -56,7 +56,7 @@ export const initialState: SettingsState = {
   showOnlyTrustedTransactions: false,
 
   shortName: {
-    copy: true,
+    copy: false,
     qr: true,
   },
   theme: {},
