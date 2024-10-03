@@ -64,7 +64,7 @@ declare module '@mui/material/IconButton' {
 }
 
 const createSafeTheme = (mode: PaletteMode): Theme => {
-  const isDarkMode = mode === 'dark'
+  const isDarkMode = true // mode === 'dark'
   const colors = isDarkMode ? darkPalette : palette
   const shadowColor = colors.primary.light
 
