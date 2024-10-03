@@ -6,9 +6,9 @@ export type TagManagerArgs = {
   // GTM id, e.g. GTM-000000
   gtmId: string
   // GTM authentication key
-  auth: string
+  auth?: string
   // GTM environment, e.g. env-00.
-  preview: string
+  preview?: string
 }
 
 const DATA_LAYER_NAME = 'dataLayer'
@@ -26,7 +26,7 @@ const TagManager = {
       j = d.createElement(s),
         dl = l != 'dataLayer' ? '&l=' + l : '';
         j.async = true;
-        j.src = 'https://www.googletagmanager.com/gtm.js?id=' + i + dl + '&gtm_auth=${auth}&gtm_preview=${preview}&gtm_cookies_win=x';
+        j.src = 'https://www.googletagmanager.com/gtm.js?id=' + i + dl + '&gtm_cookies_win=x';
         f.parentNode.insertBefore(j, f);
       })(window, document, 'script', '${DATA_LAYER_NAME}', '${gtmId}');`
 
