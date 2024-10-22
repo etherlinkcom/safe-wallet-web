@@ -36,12 +36,6 @@ const getStep = (status: SafeCreationEvent) => {
         description: 'Your Safe Account was successfully created!',
         instruction: '',
       }
-    case SafeCreationStatus.INDEX_FAILED:
-      return {
-        description: 'Your Safe Account is successfully created!',
-        instruction:
-          'You can already open Etherlink Safe. It might take a moment until it becomes fully usable in the interface.',
-      }
   }
 }
 
