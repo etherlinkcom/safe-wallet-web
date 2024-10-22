@@ -5,7 +5,7 @@ import { formatJsonRpcError } from '@walletconnect/jsonrpc-utils'
 import useSafeInfo from '@/hooks/useSafeInfo'
 import useSafeWalletProvider from '@/services/safe-wallet-provider/useSafeWalletProvider'
 import { asError } from '@/services/exceptions/utils'
-import { IS_PRODUCTION, WC_APP_DEV, WC_APP_PROD } from '@/config/constants'
+import { IS_PRODUCTION } from '@/config/constants'
 import { getPeerName, stripEip155Prefix } from '@/features/walletconnect/services/utils'
 import { trackRequest } from '@/features/walletconnect//services/tracking'
 import { wcPopupStore } from '@/features/walletconnect/components'
@@ -23,7 +23,9 @@ export enum WCLoadingState {
   DISCONNECT = 'Disconnect',
 }
 
-const WalletConnectSafeApp = IS_PRODUCTION ? WC_APP_PROD : WC_APP_DEV
+// The URL of the former WalletConnect Safe App
+// This is still used to differentiate these txs from Safe App txs in the analytics
+const LEGACY_WC_APP_URL = 'https://apps-portal.safe.global/wallet-connect'
 
 const walletConnectSingleton = new WalletConnectWallet()
 
@@ -90,9 +92,8 @@ export const WalletConnectProvider = ({ children }: { children: ReactNode }) => 
 
         // Get response from Safe Wallet Provider
         return safeWalletProvider.request(event.id, event.params.request, {
-          id: WalletConnectSafeApp.id,
-          url: WalletConnectSafeApp.url,
-          name: getPeerName(session.peer) || 'Unknown dApp',
+          url: LEGACY_WC_APP_URL, // required for server-side analytics
+          name: getPeerName(session.peer) || 'WalletConnect',
           description: session.peer.metadata.description,
           iconUrl: session.peer.metadata.icons[0],
         })

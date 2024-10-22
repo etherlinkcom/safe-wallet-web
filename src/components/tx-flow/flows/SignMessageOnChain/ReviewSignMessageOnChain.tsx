@@ -1,3 +1,4 @@
+import useWallet from '@/hooks/wallets/useWallet'
 import type { ReactElement } from 'react'
 import { useContext, useEffect, useState } from 'react'
 import { useMemo } from 'react'
@@ -12,8 +13,6 @@ import SendFromBlock from '@/components/tx/SendFromBlock'
 import { InfoDetails } from '@/components/transactions/InfoDetails'
 import EthHashInfo from '@/components/common/EthHashInfo'
 import SignOrExecuteForm from '@/components/tx/SignOrExecuteForm'
-import { generateDataRowValue } from '@/components/transactions/TxDetails/Summary/TxDataRow'
-import useChainId from '@/hooks/useChainId'
 import { getReadOnlySignMessageLibContract } from '@/services/contracts/safeContracts'
 import { DecodedMsg } from '@/components/safe-messages/DecodedMsg'
 import CopyButton from '@/components/common/CopyButton'
@@ -29,6 +28,7 @@ import { isEIP712TypedData } from '@/utils/safe-messages'
 import ApprovalEditor from '@/components/tx/ApprovalEditor'
 import { ErrorBoundary } from '@sentry/react'
 import useAsync from '@/hooks/useAsync'
+import { HexEncodedData } from '@/components/transactions/HexEncodedData'
 
 export type SignMessageOnChainProps = {
   app?: SafeAppData
@@ -38,9 +38,9 @@ export type SignMessageOnChainProps = {
 }
 
 const ReviewSignMessageOnChain = ({ message, method, requestId }: SignMessageOnChainProps): ReactElement => {
-  const chainId = useChainId()
   const { safe } = useSafeInfo()
   const onboard = useOnboard()
+  const wallet = useWallet()
   const { safeTx, setSafeTx, setSafeTxError } = useContext(SafeTxContext)
   useHighlightHiddenTab()
 
@@ -48,8 +48,8 @@ const ReviewSignMessageOnChain = ({ message, method, requestId }: SignMessageOnC
   const isTypedMessage = method === Methods.signTypedMessage && isEIP712TypedData(message)
 
   const [readOnlySignMessageLibContract] = useAsync(
-    async () => getReadOnlySignMessageLibContract(chainId, safe.version),
-    [chainId, safe.version],
+    async () => getReadOnlySignMessageLibContract(safe.version),
+    [safe.version],
   )
 
   const [signMessageAddress, setSignMessageAddress] = useState<string>('')
@@ -108,10 +108,10 @@ const ReviewSignMessageOnChain = ({ message, method, requestId }: SignMessageOnC
   ])
 
   const handleSubmit = async () => {
-    if (!safeTx || !onboard) return
+    if (!safeTx || !onboard || !wallet) return
 
     try {
-      await dispatchSafeAppsTx(safeTx, requestId, onboard, safe.chainId)
+      await dispatchSafeAppsTx(safeTx, requestId, wallet.provider)
     } catch (error) {
       setSafeTxError(asError(error))
     }
@@ -133,10 +133,7 @@ const ReviewSignMessageOnChain = ({ message, method, requestId }: SignMessageOnC
 
       {safeTx && (
         <Box pb={1}>
-          <Typography mt={2} color="primary.light">
-            Data (hex encoded)
-          </Typography>
-          {generateDataRowValue(safeTx.data.data, 'rawData')}
+          <HexEncodedData title="Data (hex-encoded)" hexData={safeTx.data.data} />
         </Box>
       )}
 

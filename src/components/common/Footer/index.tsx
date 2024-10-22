@@ -55,9 +55,6 @@ const Footer = (): ReactElement | null => {
               <Typography variant="caption">&copy;2022–{new Date().getFullYear()} Core Contributors GmbH</Typography>
             </li>
             <li>
-              <FooterLink href={getHref(AppRoutes.terms)}>Terms</FooterLink>
-            </li>
-            <li>
               <FooterLink href={getHref(AppRoutes.privacy)}>Privacy</FooterLink>
             </li>
             <li>
@@ -78,6 +75,12 @@ const Footer = (): ReactElement | null => {
               <ExternalLink href={DISCORD_URL} noIcon>
                 <SvgIcon component={DiscordIcon} inheritViewBox fontSize="inherit" sx={{ mr: 0.5 }} /> Discord
               </ExternalLink>
+            </li>
+            <li>
+              <FooterLink href={getHref(AppRoutes.terms)}>Terms</FooterLink>
+            </li>
+            <li>
+              <FooterLink href={getHref(AppRoutes.cookie)}>Cookie policy</FooterLink>
             </li>
             <li>
               <FooterLink href={getHref(AppRoutes.settings.index)}>Preferences</FooterLink>

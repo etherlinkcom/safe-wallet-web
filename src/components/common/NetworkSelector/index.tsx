@@ -1,7 +1,6 @@
 import ChainIndicator from '@/components/common/ChainIndicator'
 import { useDarkMode } from '@/hooks/useDarkMode'
 import { useTheme } from '@mui/material/styles'
-import { type ChainInfo } from '@safe-global/safe-gateway-typescript-sdk'
 import Link from 'next/link'
 import type { SelectChangeEvent } from '@mui/material'
 import { ListSubheader, MenuItem, Select, Skeleton } from '@mui/material'
@@ -16,25 +15,29 @@ import { useCallback } from 'react'
 import { AppRoutes } from '@/config/routes'
 import { trackEvent, OVERVIEW_EVENTS } from '@/services/analytics'
 import useWallet from '@/hooks/wallets/useWallet'
-import { isSocialWalletEnabled } from '@/hooks/wallets/wallets'
-import { isSocialLoginWallet } from '@/services/mpc/SocialLoginModule'
+import { useAppSelector } from '@/store'
+import { selectChains } from '@/store/chainsSlice'
 
 const NetworkSelector = (props: { onChainSelect?: () => void }): ReactElement => {
-  const wallet = useWallet()
   const isDarkMode = useDarkMode()
   const theme = useTheme()
   const { configs } = useChains()
   const chainId = useChainId()
   const router = useRouter()
-
+  const isWalletConnected = !!useWallet()
   const [testNets, prodNets] = useMemo(() => partition(configs, (config) => config.isTestnet), [configs])
+  const chains = useAppSelector(selectChains)
 
   const getNetworkLink = useCallback(
     (shortName: string) => {
       const shouldKeepPath = !router.query.safe
 
       const route = {
-        pathname: shouldKeepPath ? router.pathname : AppRoutes.index,
+        pathname: shouldKeepPath
+          ? router.pathname
+          : isWalletConnected
+          ? AppRoutes.welcome.accounts
+          : AppRoutes.welcome.index,
         query: {
           chain: shortName,
         } as {
@@ -49,7 +52,7 @@ const NetworkSelector = (props: { onChainSelect?: () => void }): ReactElement =>
 
       return route
     },
-    [router],
+    [router, isWalletConnected],
   )
 
   const onChange = (event: SelectChangeEvent) => {
@@ -64,24 +67,19 @@ const NetworkSelector = (props: { onChainSelect?: () => void }): ReactElement =>
     }
   }
 
-  const isSocialLogin = isSocialLoginWallet(wallet?.label)
-
   const renderMenuItem = useCallback(
-    (value: string, chain: ChainInfo) => {
+    (chainId: string, isSelected: boolean) => {
+      const chain = chains.data.find((chain) => chain.chainId === chainId)
+      if (!chain) return null
       return (
-        <MenuItem
-          key={value}
-          value={value}
-          className={css.menuItem}
-          disabled={isSocialLogin && !isSocialWalletEnabled(chain)}
-        >
+        <MenuItem key={chainId} value={chainId} sx={{ '&:hover': { backgroundColor: 'inherit' } }}>
           <Link href={getNetworkLink(chain.shortName)} onClick={props.onChainSelect} className={css.item}>
-            <ChainIndicator chainId={chain.chainId} inline />
+            <ChainIndicator responsive={isSelected} chainId={chain.chainId} inline />
           </Link>
         </MenuItem>
       )
     },
-    [getNetworkLink, isSocialLogin, props.onChainSelect],
+    [chains.data, getNetworkLink, props.onChainSelect],
   )
 
   return configs.length ? (
@@ -92,6 +90,7 @@ const NetworkSelector = (props: { onChainSelect?: () => void }): ReactElement =>
       className={css.select}
       variant="standard"
       IconComponent={ExpandMoreIcon}
+      renderValue={(value) => renderMenuItem(value, true)}
       MenuProps={{
         transitionDuration: 0,
         sx: {
@@ -113,11 +112,11 @@ const NetworkSelector = (props: { onChainSelect?: () => void }): ReactElement =>
         },
       }}
     >
-      {prodNets.map((chain) => renderMenuItem(chain.chainId, chain))}
+      {prodNets.map((chain) => renderMenuItem(chain.chainId, false))}
 
       <ListSubheader className={css.listSubHeader}>Testnets</ListSubheader>
 
-      {testNets.map((chain) => renderMenuItem(chain.chainId, chain))}
+      {testNets.map((chain) => renderMenuItem(chain.chainId, false))}
     </Select>
   ) : (
     <Skeleton width={94} height={31} sx={{ mx: 2 }} />

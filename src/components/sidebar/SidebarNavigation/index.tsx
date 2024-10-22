@@ -1,7 +1,7 @@
-import React, { useMemo, type ReactElement } from 'react'
+import React, { useContext, useMemo, type ReactElement } from 'react'
 import { useRouter } from 'next/router'
 import ListItem from '@mui/material/ListItem'
-import { type ChainInfo, ImplementationVersionState } from '@safe-global/safe-gateway-typescript-sdk'
+import { ImplementationVersionState } from '@safe-global/safe-gateway-typescript-sdk'
 
 import {
   SidebarList,
@@ -15,20 +15,21 @@ import useSafeInfo from '@/hooks/useSafeInfo'
 import { AppRoutes } from '@/config/routes'
 import { useQueuedTxsLength } from '@/hooks/useTxQueue'
 import { useCurrentChain } from '@/hooks/useChains'
-import { FeatureRoutes, hasFeature } from '@/utils/chains'
+import { isRouteEnabled } from '@/utils/chains'
 import { trackEvent } from '@/services/analytics'
 import { SWAP_EVENTS, SWAP_LABELS } from '@/services/analytics/events/swaps'
-import useIsCounterfactualSafe from '@/features/counterfactual/hooks/useIsCounterfactualSafe'
+import { GeoblockingContext } from '@/components/common/GeoblockingProvider'
+import { STAKE_EVENTS, STAKE_LABELS } from '@/services/analytics/events/stake'
 
 const getSubdirectory = (pathname: string): string => {
   return pathname.split('/')[1]
 }
 
-const isRouteEnabled = (route: string, chain?: ChainInfo) => {
-  if (!chain) return false
+const geoBlockedRoutes = [AppRoutes.swap, AppRoutes.stake]
 
-  const featureRoute = FeatureRoutes[route]
-  return !featureRoute || hasFeature(chain, featureRoute)
+const customSidebarEvents: { [key: string]: { event: any; label: string } } = {
+  [AppRoutes.swap]: { event: SWAP_EVENTS.OPEN_SWAPS, label: SWAP_LABELS.sidebar },
+  [AppRoutes.stake]: { event: STAKE_EVENTS.OPEN_STAKE, label: STAKE_LABELS.sidebar },
 }
 
 const Navigation = (): ReactElement => {
@@ -37,29 +38,22 @@ const Navigation = (): ReactElement => {
   const { safe } = useSafeInfo()
   const currentSubdirectory = getSubdirectory(router.pathname)
   const queueSize = useQueuedTxsLength()
-  const isCounterFactualSafe = useIsCounterfactualSafe()
+  const isBlockedCountry = useContext(GeoblockingContext)
+
   const enabledNavItems = useMemo(() => {
     return navItems.filter((item) => {
-      const enabled = isRouteEnabled(item.href, chain)
-
-      if (item.href === AppRoutes.swap && isCounterFactualSafe) {
+      if (isBlockedCountry && geoBlockedRoutes.includes(item.href)) {
         return false
       }
-      return enabled
+
+      return isRouteEnabled(item.href, chain)
     })
-  }, [chain, isCounterFactualSafe])
+  }, [chain, isBlockedCountry])
 
   const getBadge = (item: NavItem) => {
     // Indicate whether the current Safe needs an upgrade
     if (item.href === AppRoutes.settings.setup) {
       return safe.implementationVersionState === ImplementationVersionState.OUTDATED
-    }
-  }
-
-  const getCounter = (item: NavItem) => {
-    // Indicate qeueued txs
-    if (item.href === AppRoutes.transactions.history) {
-      return queueSize
     }
   }
 
@@ -72,8 +66,9 @@ const Navigation = (): ReactElement => {
   }
 
   const handleNavigationClick = (href: string) => {
-    if (href === AppRoutes.swap) {
-      trackEvent({ ...SWAP_EVENTS.OPEN_SWAPS, label: SWAP_LABELS.sidebar })
+    const eventInfo = customSidebarEvents[href]
+    if (eventInfo) {
+      trackEvent({ ...eventInfo.event, label: eventInfo.label })
     }
   }
 
@@ -82,23 +77,30 @@ const Navigation = (): ReactElement => {
       {enabledNavItems.map((item) => {
         const isSelected = currentSubdirectory === getSubdirectory(item.href)
 
+        let ItemTag = item.tag ? item.tag : null
+
+        if (item.href === AppRoutes.transactions.history) {
+          ItemTag = queueSize ? <SidebarListItemCounter count={queueSize} /> : null
+        }
+
         return (
           <ListItem
-            key={item.href}
             disablePadding
             selected={isSelected}
             onClick={() => handleNavigationClick(item.href)}
+            key={item.href}
           >
             <SidebarListItemButton
               selected={isSelected}
-              href={{ pathname: getRoute(item.href), query: { safe: router.query.safe } }}
+              href={item.href && { pathname: getRoute(item.href), query: { safe: router.query.safe } }}
+              disabled={item.disabled}
             >
               {item.icon && <SidebarListItemIcon badge={getBadge(item)}>{item.icon}</SidebarListItemIcon>}
 
               <SidebarListItemText data-testid="sidebar-list-item" bold>
                 {item.label}
 
-                <SidebarListItemCounter count={getCounter(item)} />
+                {ItemTag}
               </SidebarListItemText>
             </SidebarListItemButton>
           </ListItem>

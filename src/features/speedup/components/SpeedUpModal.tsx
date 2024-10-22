@@ -1,7 +1,7 @@
 import useGasPrice from '@/hooks/useGasPrice'
 import ModalDialog from '@/components/common/ModalDialog'
 import DialogContent from '@mui/material/DialogContent'
-import { Box, Button, SvgIcon, Tooltip, Typography } from '@mui/material'
+import { Box, Button, CircularProgress, SvgIcon, Tooltip, Typography } from '@mui/material'
 import RocketSpeedup from '@/public/images/common/ic-rocket-speedup.svg'
 import DialogActions from '@mui/material/DialogActions'
 import useWallet from '@/hooks/wallets/useWallet'
@@ -26,6 +26,9 @@ import { TX_EVENTS } from '@/services/analytics/events/transactions'
 import { getTransactionTrackingType } from '@/services/analytics/tx-tracking'
 import { trackError } from '@/services/exceptions'
 import ErrorCodes from '@/services/exceptions/ErrorCodes'
+import CheckWallet from '@/components/common/CheckWallet'
+import { useLazyGetTransactionDetailsQuery } from '@/store/gateway'
+import NetworkWarning from '@/components/new-safe/create/NetworkWarning'
 
 type Props = {
   open: boolean
@@ -57,7 +60,7 @@ export const SpeedUpModal = ({
   const safeAddress = useSafeAddress()
   const hasActions = signerAddress && signerAddress === wallet?.address
   const dispatch = useAppDispatch()
-
+  const [trigger] = useLazyGetTransactionDetailsQuery()
   const isDisabled = waitingForConfirmation || !wallet || !speedUpFee || !onboard
   const [safeTx] = useAsync(async () => {
     if (!chainInfo?.chainId || !safeAddress) {
@@ -89,15 +92,19 @@ export const SpeedUpModal = ({
 
     try {
       setWaitingForConfirmation(true)
+
       if (pendingTx.txType === PendingTxType.SAFE_TX) {
         await dispatchSafeTxSpeedUp(
           txOptions as Omit<TransactionOptions, 'nonce'> & { nonce: number },
           txId,
-          onboard,
+          wallet.provider,
           chainInfo.chainId,
+          wallet.address,
           safeAddress,
+          safeTx.data.nonce,
         )
-        const txType = await getTransactionTrackingType(chainInfo.chainId, txId)
+        const { data: details } = await trigger({ chainId: chainInfo.chainId, txId })
+        const txType = getTransactionTrackingType(details)
         trackEvent({ ...TX_EVENTS.SPEED_UP, label: txType })
       } else {
         await dispatchCustomTxSpeedUp(
@@ -105,9 +112,10 @@ export const SpeedUpModal = ({
           txId,
           pendingTx.to,
           pendingTx.data,
-          onboard,
-          chainInfo?.chainId,
+          wallet.provider,
+          wallet.address,
           safeAddress,
+          pendingTx.nonce,
         )
         // Currently all custom txs are batch executes
         trackEvent({ ...TX_EVENTS.SPEED_UP, label: 'batch' })
@@ -148,6 +156,7 @@ export const SpeedUpModal = ({
     txId,
     wallet,
     safeTx,
+    trigger,
   ])
 
   if (!hasActions) {
@@ -186,15 +195,28 @@ export const SpeedUpModal = ({
               />
             )}
           </Box>
+          <Box sx={{ '&:not(:empty)': { mt: 3 } }}>
+            <NetworkWarning />
+          </Box>
         </DialogContent>
 
         <DialogActions>
           <Button onClick={onCancel}>Cancel</Button>
 
           <Tooltip title="Speed up transaction">
-            <Button color="primary" disabled={isDisabled} onClick={onSubmit} variant="contained" disableElevation>
-              {isDisabled ? 'Waiting on confirmation in wallet...' : 'Confirm'}
-            </Button>
+            <CheckWallet checkNetwork={!isDisabled}>
+              {(isOk) => (
+                <Button
+                  color="primary"
+                  disabled={!isOk || isDisabled}
+                  onClick={onSubmit}
+                  variant="contained"
+                  disableElevation
+                >
+                  {isDisabled ? <CircularProgress size={20} /> : 'Confirm'}
+                </Button>
+              )}
+            </CheckWallet>
           </Tooltip>
         </DialogActions>
       </ModalDialog>

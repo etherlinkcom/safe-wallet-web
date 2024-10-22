@@ -12,7 +12,7 @@ export const GATEWAY_URL_STAGING =
 export const POLLING_INTERVAL = 15_000
 export const BASE_TX_GAS = 21_000
 export const LS_NAMESPACE = 'SAFE_v2__'
-export const LATEST_SAFE_VERSION = process.env.NEXT_PUBLIC_SAFE_VERSION || '1.3.0'
+export const LATEST_SAFE_VERSION = process.env.NEXT_PUBLIC_SAFE_VERSION || '1.4.1'
 
 // Access keys
 export const INFURA_TOKEN = process.env.NEXT_PUBLIC_INFURA_TOKEN || ''
@@ -60,19 +60,9 @@ export const TENDERLY_ORG_NAME = process.env.NEXT_PUBLIC_TENDERLY_ORG_NAME || ''
 export enum SafeAppsTag {
   NFT = 'nft',
   TX_BUILDER = 'transaction-builder',
-  DASHBOARD_FEATURED = 'dashboard-widgets',
   SAFE_GOVERNANCE_APP = 'safe-governance-app',
-  WALLET_CONNECT = 'wallet-connect',
   ONRAMP = 'onramp',
-}
-
-export const WC_APP_PROD = {
-  id: 2,
-  url: 'https://apps.safe.protofire.io/wallet-connect',
-}
-export const WC_APP_DEV = {
-  id: 2,
-  url: 'https://dev-apps.safe.protofire.io/wallet-connect',
+  RECOVERY_SYGNUM = 'recovery-sygnum',
 }
 
 // Help Center
@@ -95,6 +85,7 @@ export const HelpCenterArticle = {
   UNEXPECTED_DELEGATE_CALL: `${HELP_CENTER_URL}/en/articles/40794-why-do-i-see-an-unexpected-delegate-call-warning-in-my-transaction`,
   DELEGATES: `${HELP_CENTER_URL}/en/articles/40799-what-is-a-delegate-key`,
   PUSH_NOTIFICATIONS: `${HELP_CENTER_URL}/en/articles/99197-how-to-start-receiving-web-push-notifications-in-the-web-wallet`,
+  SWAP_WIDGET_FEES: `${HELP_CENTER_URL}/en/articles/178530-how-does-the-widget-fee-work-for-native-swaps`,
 } as const
 export const HelperCenterArticleTitles = {
   RECOVERY: 'Learn more about the Account recovery process',
@@ -112,7 +103,12 @@ export const TWITTER_URL = 'https://x.com/etherlink'
 // Legal
 export const IS_OFFICIAL_HOST = 'true'
 
-// Risk mitigation (Redefine)
-export const REDEFINE_SIMULATION_URL = 'https://dashboard.redefine.net/reports/'
-export const REDEFINE_API = process.env.NEXT_PUBLIC_REDEFINE_API
+// Risk mitigation (Blockaid)
+export const BLOCKAID_API = 'https://client.blockaid.io'
+export const BLOCKAID_CLIENT_ID = process.env.NEXT_PUBLIC_BLOCKAID_CLIENT_ID
 export const REDEFINE_ARTICLE = 'https://safe.mirror.xyz/rInLWZwD_sf7enjoFerj6FIzCYmVMGrrV8Nhg4THdwI'
+
+export const CHAINALYSIS_OFAC_CONTRACT = '0x40c57923924b5c5c5455c48d93317139addac8fb'
+
+export const ECOSYSTEM_ID_ADDRESS =
+  process.env.NEXT_PUBLIC_ECOSYSTEM_ID_ADDRESS || '0x0000000000000000000000000000000000000000'

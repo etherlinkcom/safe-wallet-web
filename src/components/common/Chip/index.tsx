@@ -1,18 +1,32 @@
-import { Chip as MuiChip } from '@mui/material'
-import type { ChipProps } from '@mui/material'
-import type { ReactElement } from 'react'
+import { Typography, Chip as MuiChip, type ChipProps } from '@mui/material'
 
-import { useDarkMode } from '@/hooks/useDarkMode'
+type Props = {
+  label?: string
+  sx?: ChipProps['sx']
+}
 
-export function Chip(props: ChipProps): ReactElement {
-  const isDarkMode = useDarkMode()
+export function Chip({ sx, label = 'New' }: Props) {
   return (
     <MuiChip
-      label="New"
-      color={isDarkMode ? 'primary' : 'secondary'}
       size="small"
-      sx={{ borderRadius: '4px', fontSize: '12px' }}
-      {...props}
+      component="span"
+      sx={{
+        ...sx,
+        mt: '-2px',
+      }}
+      label={
+        <Typography
+          variant="caption"
+          fontWeight="bold"
+          display="flex"
+          alignItems="center"
+          gap={1}
+          letterSpacing="1px"
+          component="span"
+        >
+          {label}
+        </Typography>
+      }
     />
   )
 }

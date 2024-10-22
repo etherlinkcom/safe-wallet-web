@@ -9,6 +9,7 @@ export const downloadBatchBtn = 'button[title="Download batch"]'
 export const deleteBatchBtn = 'button[title="Delete Batch"]'
 const appModal = '[data-testid="app-info-modal"]'
 export const safeAppsList = '[data-testid="apps-list"]'
+const openSafeAppBtn = '[data-testid="open-safe-app-btn"]'
 
 const addBtnStr = /add/i
 const noAppsStr = /no Safe Apps found/i
@@ -26,7 +27,7 @@ const acceptBtnStr = /accept/i
 const clearAllBtnStr = /clear all/i
 const allowAllPermissions = /allow all/i
 export const enterAddressStr = /enter address or ens name/i
-export const addTransactionStr = /add transaction/i
+export const addTransactionStr = /add new transaction/i
 export const createBatchStr = /create batch/i
 export const sendBatchStr = /send batch/i
 export const transactionDetailsStr = /transaction details/i
@@ -89,6 +90,8 @@ export const transferStr = 'Transfer'
 export const successStr = 'Success'
 export const failedStr = 'Failed'
 
+export const dummyTxStr = 'Trigger dummy tx (safe.txs.send)'
+export const signOnchainMsgStr = 'Sign message (on-chain)'
 export const pinWalletConnectStr = /pin walletconnect/i
 export const transactionBuilderStr = 'Transaction Builder'
 export const testAddressValueStr = 'testAddressValue'
@@ -126,6 +129,14 @@ export const permissionCheckboxNames = {
   fullscreen: 'Fullscreen',
 }
 
+export function triggetOffChainTx() {
+  cy.contains(dummyTxStr).click()
+}
+
+export function triggetOnChainTx() {
+  cy.contains(signOnchainMsgStr).click()
+}
+
 export function verifyWarningDefaultAppMsgIsDisplayed() {
   cy.get('p').contains(warningDefaultAppStr).should('be.visible')
   cy.wait(1000)
@@ -145,6 +156,7 @@ export function verifyLinkName(name) {
 
 export function clickOnApp(app) {
   cy.contains(app).click()
+  cy.wait(2000)
 }
 
 export function verifyNoAppsTextPresent() {
@@ -205,10 +217,11 @@ export function verifyAppDescription(descr) {
 }
 
 export function clickOnOpenSafeAppBtn() {
-  cy.findByRole('link', { name: openSafeAppBtnStr }).click()
-  cy.wait(500)
+  cy.get(openSafeAppBtn).click()
+}
+
+export function verifyDisclaimerIsDisplayed() {
   verifyDisclaimerIsVisible()
-  cy.wait(500)
 }
 
 function verifyDisclaimerIsVisible() {
@@ -234,20 +247,17 @@ export function verifyMicrofoneCheckBoxExists() {
   return cy.findByRole('checkbox', { name: microfoneCheckBoxStr }).should('exist')
 }
 
-export function storeAndVerifyPermissions() {
+export function verifyInfoModalAcceptance() {
   cy.waitForSelector(() => {
     return cy
       .findByRole('button', { name: continueBtnStr })
       .click()
-      .wait(500)
+      .wait(2000)
       .should(() => {
-        const storedBrowserPermissions = JSON.parse(localStorage.getItem(constants.BROWSER_PERMISSIONS_KEY))
-        const browserPermissions = Object.values(storedBrowserPermissions)[0][0]
-        const storedInfoModal = JSON.parse(localStorage.getItem(constants.INFO_MODAL_KEY))
-
-        expect(browserPermissions.feature).to.eq('camera')
-        expect(browserPermissions.status).to.eq('granted')
-        expect(storedInfoModal['11155111'].consentsAccepted).to.eq(true)
+        const storedInfoModal = JSON.parse(
+          localStorage.getItem(constants.localStorageKeys.SAFE_v2__SafeApps__infoModal),
+        )
+        expect(storedInfoModal[constants.networkKeys.sepolia].consentsAccepted).to.eq(true)
       })
   })
 }

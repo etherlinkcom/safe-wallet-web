@@ -34,6 +34,7 @@ type EnhancedHeadCell = {
   id: string
   label: ReactNode
   width?: string
+  align?: string
   sticky?: boolean
 }
 
@@ -75,7 +76,10 @@ function EnhancedTableHead(props: EnhancedTableHeadProps) {
             align="left"
             padding="normal"
             sortDirection={orderBy === headCell.id ? order : false}
-            sx={headCell.width ? { width: headCell.width } : undefined}
+            sx={{
+              width: headCell.width ? headCell.width : '',
+              textAlign: headCell.align ? headCell.align : '',
+            }}
             className={classNames({ sticky: headCell.sticky })}
           >
             {headCell.label && (
@@ -84,6 +88,7 @@ function EnhancedTableHead(props: EnhancedTableHeadProps) {
                   active={orderBy === headCell.id}
                   direction={orderBy === headCell.id ? order : 'asc'}
                   onClick={createSortHandler(headCell.id)}
+                  sx={{ mr: [0, '-26px'] }}
                 >
                   {headCell.label}
                   {orderBy === headCell.id ? (

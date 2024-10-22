@@ -24,6 +24,7 @@ import CheckCircleRoundedIcon from '@mui/icons-material/CheckCircleRounded'
 import CheckCircleOutlineRoundedIcon from '@mui/icons-material/CheckCircleOutlineRounded'
 import LightbulbOutlinedIcon from '@mui/icons-material/LightbulbOutlined'
 import css from './styles.module.css'
+import ActivateAccountButton from '@/features/counterfactual/ActivateAccountButton'
 
 const calculateProgress = (items: boolean[]) => {
   const totalNumberOfItems = items.length
@@ -133,21 +134,17 @@ const AddFundsWidget = ({ completed }: { completed: boolean }) => {
       {!completed && (
         <>
           <Box mt={2}>
-            <CheckWallet>
-              {(isOk) => (
-                <Track {...OVERVIEW_EVENTS.ADD_FUNDS}>
-                  <Button
-                    onClick={toggleDialog}
-                    variant="contained"
-                    size="small"
-                    sx={{ minHeight: '40px' }}
-                    disabled={!isOk}
-                  >
-                    Add funds
-                  </Button>
-                </Track>
-              )}
-            </CheckWallet>
+            <Track {...OVERVIEW_EVENTS.ADD_FUNDS}>
+              <Button
+                data-testid="add-funds-btn"
+                onClick={toggleDialog}
+                variant="contained"
+                size="small"
+                sx={{ minHeight: '40px' }}
+              >
+                Add funds
+              </Button>
+            </Track>
           </Box>
           <ModalDialog
             open={open}
@@ -157,7 +154,7 @@ const AddFundsWidget = ({ completed }: { completed: boolean }) => {
           >
             <Box px={4} pb={5} pt={4}>
               <Grid container spacing={2} alignItems="center" justifyContent="center" mb={4}>
-                <Grid item textAlign="center">
+                <Grid data-testid="qr-code" item textAlign="center">
                   <Box p={1} border={1} borderRadius="6px" borderColor="border.light" display="inline-flex">
                     <QRCode value={qrCode} size={132} />
                   </Box>
@@ -165,6 +162,7 @@ const AddFundsWidget = ({ completed }: { completed: boolean }) => {
                     <FormControlLabel
                       control={
                         <Switch
+                          data-testid="qr-code-switch"
                           checked={settings.shortName.qr}
                           onChange={(e) => dispatch(setQrShortName(e.target.checked))}
                         />
@@ -183,7 +181,14 @@ const AddFundsWidget = ({ completed }: { completed: boolean }) => {
                     account.
                   </Typography>
 
-                  <Box bgcolor="background.main" p={2} borderRadius="6px" alignSelf="flex-start" fontSize="14px">
+                  <Box
+                    data-testid="address-info"
+                    bgcolor="background.main"
+                    p={2}
+                    borderRadius="6px"
+                    alignSelf="flex-start"
+                    fontSize="14px"
+                  >
                     <EthHashInfo
                       address={safeAddress}
                       showName={false}
@@ -234,6 +239,7 @@ const FirstTransactionWidget = ({ completed }: { completed: boolean }) => {
             {(isOk) => (
               <Track {...OVERVIEW_EVENTS.NEW_TRANSACTION} label="onboarding">
                 <Button
+                  data-testid="create-tx-btn"
                   onClick={() => setOpen(true)}
                   variant="outlined"
                   size="small"
@@ -246,6 +252,30 @@ const FirstTransactionWidget = ({ completed }: { completed: boolean }) => {
             )}
           </CheckWallet>
         )}
+      </StatusCard>
+      <FirstTxFlow open={open} onClose={() => setOpen(false)} />
+    </>
+  )
+}
+
+const ActivateSafeWidget = () => {
+  const [open, setOpen] = useState<boolean>(false)
+
+  const title = 'Activate your Safe account.'
+
+  return (
+    <>
+      <StatusCard
+        badge={
+          <Typography variant="body2" className={css.badgeText}>
+            Activate your Safe
+          </Typography>
+        }
+        title={title}
+        completed={false}
+        content=""
+      >
+        <ActivateAccountButton />
       </StatusCard>
       <FirstTxFlow open={open} onClose={() => setOpen(false)} />
     </>
@@ -272,6 +302,8 @@ const FirstSteps = () => {
   const outgoingTransactions = useAppSelector(selectOutgoingTransactions)
   const chain = useCurrentChain()
   const undeployedSafe = useAppSelector((state) => selectUndeployedSafe(state, safe.chainId, safeAddress))
+
+  const isMultiSig = safe.threshold > 1
 
   const hasNonZeroBalance = balances && (balances.items.length > 1 || BigInt(balances.items[0]?.balance || 0) > 0)
   const hasOutgoingTransactions = !!outgoingTransactions && outgoingTransactions.length > 0
@@ -349,7 +381,13 @@ const FirstSteps = () => {
           </Grid>
 
           <Grid item xs={12} md={4}>
-            {isActivating ? <UsefulHintsWidget /> : <FirstTransactionWidget completed={hasOutgoingTransactions} />}
+            {isActivating ? (
+              <UsefulHintsWidget />
+            ) : isMultiSig ? (
+              <ActivateSafeWidget />
+            ) : (
+              <FirstTransactionWidget completed={hasOutgoingTransactions} />
+            )}
           </Grid>
 
           <Grid item xs={12} md={4}>

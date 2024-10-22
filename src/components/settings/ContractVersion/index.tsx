@@ -1,7 +1,6 @@
 import { useContext, useMemo } from 'react'
-import { Box, SvgIcon, Typography, Alert, AlertTitle, Skeleton, Button } from '@mui/material'
+import { SvgIcon, Typography, Alert, AlertTitle, Skeleton, Button } from '@mui/material'
 import { ImplementationVersionState } from '@safe-global/safe-gateway-typescript-sdk'
-import { LATEST_SAFE_VERSION } from '@/config/constants'
 import { sameAddress } from '@/utils/addresses'
 import type { MasterCopy } from '@/hooks/useMasterCopies'
 import { MasterCopyDeployer, useMasterCopies } from '@/hooks/useMasterCopies'
@@ -12,11 +11,14 @@ import { TxModalContext } from '@/components/tx-flow'
 import { UpdateSafeFlow } from '@/components/tx-flow/flows'
 import ExternalLink from '@/components/common/ExternalLink'
 import CheckWallet from '@/components/common/CheckWallet'
+import { getLatestSafeVersion } from '@/utils/chains'
+import { useCurrentChain } from '@/hooks/useChains'
 
 export const ContractVersion = () => {
   const { setTxFlow } = useContext(TxModalContext)
   const [masterCopies] = useMasterCopies()
   const { safe, safeLoaded } = useSafeInfo()
+  const currentChain = useCurrentChain()
   const masterCopyAddress = safe.implementation.value
 
   const safeMasterCopy: MasterCopy | undefined = useMemo(() => {
@@ -25,6 +27,9 @@ export const ContractVersion = () => {
 
   const needsUpdate = safe.implementationVersionState === ImplementationVersionState.OUTDATED
   const showUpdateDialog = safeMasterCopy?.deployer === MasterCopyDeployer.GNOSIS && needsUpdate
+  const isLatestVersion = safe.version && !showUpdateDialog
+
+  const latestSafeVersion = getLatestSafeVersion(currentChain)
 
   return (
     <>
@@ -32,39 +37,43 @@ export const ContractVersion = () => {
         Contract version
       </Typography>
 
-      <Typography variant="body1" fontWeight={400}>
-        {safeLoaded ? safe.version ?? 'Unsupported contract' : <Skeleton width="60px" />}
+      <Typography variant="body1" fontWeight={400} display="flex" alignItems="center">
+        {safeLoaded ? (
+          <>
+            {safe.version ?? 'Unsupported contract'}
+            {isLatestVersion && (
+              <>
+                <CheckCircleIcon color="primary" sx={{ ml: 1, mr: 0.5 }} /> Latest version
+              </>
+            )}
+          </>
+        ) : (
+          <Skeleton width="60px" />
+        )}
       </Typography>
-      <Box mt={2}>
-        {safeLoaded && safe.version ? (
-          showUpdateDialog ? (
-            <Alert
-              sx={{ borderRadius: '2px', borderColor: '#B0FFC9' }}
-              icon={<SvgIcon component={InfoIcon} inheritViewBox color="secondary" />}
-            >
-              <AlertTitle sx={{ fontWeight: 700 }}>New version is available: {LATEST_SAFE_VERSION}</AlertTitle>
 
-              <Typography mb={3}>
-                Update now to take advantage of new features and the highest security standards available. You will need
-                to confirm this update just like any other transaction.{' '}
-                <ExternalLink href={safeMasterCopy?.deployerRepoUrl}>GitHub</ExternalLink>
-              </Typography>
+      {safeLoaded && safe.version && showUpdateDialog && (
+        <Alert
+          sx={{ mt: 2, borderRadius: '2px', borderColor: '#B0FFC9' }}
+          icon={<SvgIcon component={InfoIcon} inheritViewBox color="secondary" />}
+        >
+          <AlertTitle sx={{ fontWeight: 700 }}>New version is available: {latestSafeVersion}</AlertTitle>
 
-              <CheckWallet>
-                {(isOk) => (
-                  <Button onClick={() => setTxFlow(<UpdateSafeFlow />)} variant="contained" disabled={!isOk}>
-                    Update
-                  </Button>
-                )}
-              </CheckWallet>
-            </Alert>
-          ) : (
-            <Typography display="flex" alignItems="center">
-              <CheckCircleIcon color="primary" sx={{ mr: 0.5 }} /> Latest version
-            </Typography>
-          )
-        ) : null}
-      </Box>
+          <Typography mb={3}>
+            Update now to take advantage of new features and the highest security standards available. You will need to
+            confirm this update just like any other transaction.{' '}
+            <ExternalLink href={safeMasterCopy?.deployerRepoUrl}>GitHub</ExternalLink>
+          </Typography>
+
+          <CheckWallet>
+            {(isOk) => (
+              <Button onClick={() => setTxFlow(<UpdateSafeFlow />)} variant="contained" disabled={!isOk}>
+                Update
+              </Button>
+            )}
+          </CheckWallet>
+        </Alert>
+      )}
     </>
   )
 }

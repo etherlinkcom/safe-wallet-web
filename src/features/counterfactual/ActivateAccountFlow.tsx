@@ -1,5 +1,4 @@
 import { createNewSafe, relaySafeCreation } from '@/components/new-safe/create/logic'
-import NetworkWarning from '@/components/new-safe/create/NetworkWarning'
 import { NetworkFee, SafeSetupOverview } from '@/components/new-safe/create/steps/ReviewStep'
 import ReviewRow from '@/components/new-safe/ReviewRow'
 import { TxModalContext } from '@/components/tx-flow'
@@ -20,18 +19,19 @@ import { useLeastRemainingRelays } from '@/hooks/useRemainingRelays'
 import useSafeInfo from '@/hooks/useSafeInfo'
 import useWalletCanPay from '@/hooks/useWalletCanPay'
 import useWallet from '@/hooks/wallets/useWallet'
-import { useWeb3 } from '@/hooks/wallets/web3'
 import { OVERVIEW_EVENTS, trackEvent, WALLET_EVENTS } from '@/services/analytics'
 import { TX_EVENTS, TX_TYPES } from '@/services/analytics/events/transactions'
 import { asError } from '@/services/exceptions/utils'
-import { isSocialLoginWallet } from '@/services/mpc/SocialLoginModule'
 import { useAppSelector } from '@/store'
 import { hasFeature } from '@/utils/chains'
 import { hasRemainingRelays } from '@/utils/relaying'
 import { Box, Button, CircularProgress, Divider, Grid, Typography } from '@mui/material'
 import type { DeploySafeProps } from '@safe-global/protocol-kit'
-import { FEATURES } from '@safe-global/safe-gateway-typescript-sdk'
+import { FEATURES } from '@/utils/chains'
 import React, { useContext, useState } from 'react'
+import CheckWallet from '@/components/common/CheckWallet'
+import { getLatestSafeVersion } from '@/utils/chains'
+import NetworkWarning from '@/components/new-safe/create/NetworkWarning'
 
 const useActivateAccount = () => {
   const chain = useCurrentChain()
@@ -51,7 +51,7 @@ const useActivateAccount = () => {
     : { gasPrice: maxFeePerGas?.toString(), gasLimit: gasLimit?.totalGas.toString() }
 
   const totalFee = getTotalFeeFormatted(maxFeePerGas, gasLimit?.totalGas, chain)
-  const walletCanPay = useWalletCanPay({ gasLimit: gasLimit?.totalGas, maxFeePerGas, maxPriorityFeePerGas })
+  const walletCanPay = useWalletCanPay({ gasLimit: gasLimit?.totalGas, maxFeePerGas })
 
   return { options, totalFee, walletCanPay }
 }
@@ -65,7 +65,6 @@ const ActivateAccountFlow = () => {
   const chain = useCurrentChain()
   const chainId = useChainId()
   const { safeAddress } = useSafeInfo()
-  const provider = useWeb3()
   const undeployedSafe = useAppSelector((state) => selectUndeployedSafe(state, chainId, safeAddress))
   const { setTxFlow } = useContext(TxModalContext)
   const wallet = useWallet()
@@ -89,13 +88,13 @@ const ActivateAccountFlow = () => {
     trackEvent(WALLET_EVENTS.ONCHAIN_INTERACTION)
 
     if (txHash) {
-      safeCreationDispatch(SafeCreationEvent.PROCESSING, { groupKey: CF_TX_GROUP_KEY, txHash })
+      safeCreationDispatch(SafeCreationEvent.PROCESSING, { groupKey: CF_TX_GROUP_KEY, txHash, safeAddress })
     }
     setTxFlow(undefined)
   }
 
   const createSafe = async () => {
-    if (!provider || !chain) return
+    if (!wallet || !chain) return
 
     trackEvent({ ...OVERVIEW_EVENTS.PROCEED_WITH_TX, label: TX_TYPES.activate_without_tx })
 
@@ -105,19 +104,19 @@ const ActivateAccountFlow = () => {
     try {
       if (willRelay) {
         const taskId = await relaySafeCreation(chain, owners, threshold, Number(saltNonce!), safeVersion)
-        safeCreationDispatch(SafeCreationEvent.RELAYING, { groupKey: CF_TX_GROUP_KEY, taskId })
+        safeCreationDispatch(SafeCreationEvent.RELAYING, { groupKey: CF_TX_GROUP_KEY, taskId, safeAddress })
 
         onSubmit()
       } else {
         await createNewSafe(
-          provider,
+          wallet.provider,
           {
             safeAccountConfig: undeployedSafe.props.safeAccountConfig,
             saltNonce,
             options,
             callback: onSubmit,
           },
-          safeVersion,
+          safeVersion ?? getLatestSafeVersion(chain),
         )
       }
     } catch (_err) {
@@ -129,7 +128,6 @@ const ActivateAccountFlow = () => {
   }
 
   const submitDisabled = !isSubmittable
-  const isSocialLogin = isSocialLoginWallet(wallet?.label)
 
   return (
     <TxLayout title="Activate account" hideNonce>
@@ -145,7 +143,7 @@ const ActivateAccountFlow = () => {
 
         <Divider sx={{ mx: -3, mt: 2, mb: 1 }} />
         <Box display="flex" flexDirection="column" gap={3}>
-          {canRelay && !isSocialLogin && (
+          {canRelay && (
             <Grid container spacing={3}>
               <ReviewRow
                 name="Execution method"
@@ -165,11 +163,13 @@ const ActivateAccountFlow = () => {
               name="Est. network fee"
               value={
                 <>
-                  <NetworkFee totalFee={totalFee} willRelay={willRelay} chain={chain} />
+                  <NetworkFee totalFee={totalFee} isWaived={willRelay || isWrongChain} chain={chain} />
 
-                  {!willRelay && !isSocialLogin && (
+                  {!willRelay && (
                     <Typography variant="body2" color="text.secondary" mt={1}>
-                      You will have to confirm a transaction with your connected wallet.
+                      {isWrongChain
+                        ? `Switch your connected wallet to ${chain?.chainName} to see the correct estimated network fee`
+                        : 'You will have to confirm a transaction with your connected wallet.'}
                     </Typography>
                   )}
                 </>
@@ -183,7 +183,7 @@ const ActivateAccountFlow = () => {
             </Box>
           )}
 
-          {isWrongChain && <NetworkWarning />}
+          <NetworkWarning />
 
           {!walletCanPay && !willRelay && (
             <ErrorMessage>
@@ -195,9 +195,19 @@ const ActivateAccountFlow = () => {
         <Divider sx={{ mx: -3, mt: 2, mb: 1 }} />
 
         <Box display="flex" flexDirection="row" justifyContent="flex-end" gap={3}>
-          <Button onClick={createSafe} variant="contained" size="stretched" disabled={submitDisabled}>
-            {!isSubmittable ? <CircularProgress size={20} /> : 'Activate'}
-          </Button>
+          <CheckWallet checkNetwork={!submitDisabled}>
+            {(isOk) => (
+              <Button
+                data-testid="activate-account-btn"
+                onClick={createSafe}
+                variant="contained"
+                size="stretched"
+                disabled={!isOk || submitDisabled}
+              >
+                {!isSubmittable ? <CircularProgress size={20} /> : 'Activate'}
+              </Button>
+            )}
+          </CheckWallet>
         </Box>
       </TxCard>
     </TxLayout>
