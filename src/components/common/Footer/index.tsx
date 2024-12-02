@@ -9,11 +9,11 @@ import packageJson from '../../../../package.json'
 import ExternalLink from '../ExternalLink'
 import MUILink from '@mui/material/Link'
 import { DISCORD_URL, HELP_CENTER_URL, IS_DEV, IS_OFFICIAL_HOST, TWITTER_URL } from '@/config/constants'
-import ProtofireLogo from '@/public/images/protofire-logo.svg'
+//import ProtofireLogo from '@/public/images/protofire-logo.svg'
 import TwitterIcon from '@mui/icons-material/Twitter'
 import DiscordIcon from '@/public/images/common/discord-icon.svg'
 import React from 'react'
-import darkPalette from '@/components/theme/darkPalette'
+//import darkPalette from '@/components/theme/darkPalette'
 
 const footerPages = [
   AppRoutes.welcome.index,
@@ -76,20 +76,20 @@ const Footer = (): ReactElement | null => {
                 <SvgIcon component={DiscordIcon} inheritViewBox fontSize="inherit" sx={{ mr: 0.5 }} /> Discord
               </ExternalLink>
             </li>
-            <li>
+            {/* <li>
               <FooterLink href={getHref(AppRoutes.terms)}>Terms</FooterLink>
-            </li>
+            </li> */}
             <li>
               <FooterLink href={getHref(AppRoutes.cookie)}>Cookie policy</FooterLink>
             </li>
             <li>
               <FooterLink href={getHref(AppRoutes.settings.index)}>Preferences</FooterLink>
             </li>
-            <li>
+            {/* <li>
               <ExternalLink href={HELP_CENTER_URL} noIcon sx={{ span: { textDecoration: 'underline' } }}>
                 Help
               </ExternalLink>
-            </li>
+            </li> */}
           </>
         ) : (
           <li>This is an unofficial distribution of Etherlink Safe</li>
@@ -103,20 +103,6 @@ const Footer = (): ReactElement | null => {
         {/* <li>
           <AppstoreButton placement="footer" />
         </li> */}
-        <li>
-          <Typography variant="caption">
-            Supported by{' '}
-            <SvgIcon
-              component={ProtofireLogo}
-              inheritViewBox
-              fontSize="small"
-              sx={{ verticalAlign: 'middle', mx: 0.5 }}
-            />
-            <MUILink href="https://protofire.io" sx={{ color: darkPalette.primary.main, textDecoration: 'none' }}>
-              Protofire
-            </MUILink>
-          </Typography>
-        </li>
       </ul>
     </footer>
   )

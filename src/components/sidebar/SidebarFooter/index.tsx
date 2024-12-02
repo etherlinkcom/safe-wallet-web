@@ -60,7 +60,7 @@ const SidebarFooter = (): ReactElement => {
         </ListItem>
       </Track> */}
 
-      <ListItem disablePadding>
+      {/* <ListItem disablePadding>
         <a target="_blank" rel="noopener noreferrer" href={HELP_CENTER_URL} style={{ width: '100%' }}>
           <SidebarListItemButton>
             <SidebarListItemIcon color="primary">
@@ -71,33 +71,7 @@ const SidebarFooter = (): ReactElement => {
             </SidebarListItemText>
           </SidebarListItemButton>
         </a>
-      </ListItem>
-      <ListItem disablePadding>
-        <a target="_blank" rel="noopener noreferrer" href={NEW_SUGGESTION_FORM} style={{ width: '100%' }}>
-          <SidebarListItemButton style={{ backgroundColor: '#12FF80', color: 'black' }}>
-            <SidebarListItemIcon color="primary">
-              <SuggestionIcon />
-            </SidebarListItemIcon>
-            <SidebarListItemText bold>New Features Suggestion?</SidebarListItemText>
-          </SidebarListItemButton>
-        </a>
-      </ListItem>
-      <ListItem>
-        <SidebarListItemText>
-          <Typography variant="caption">
-            Supported by{' '}
-            <SvgIcon
-              component={ProtofireLogo}
-              inheritViewBox
-              fontSize="small"
-              sx={{ verticalAlign: 'middle', mx: 0.5 }}
-            />
-            <Link href="https://protofire.io" sx={{ color: darkPalette.primary.main, textDecoration: 'none' }}>
-              Protofire
-            </Link>
-          </Typography>
-        </SidebarListItemText>
-      </ListItem>
+      </ListItem> */}
     </SidebarList>
   )
 }
