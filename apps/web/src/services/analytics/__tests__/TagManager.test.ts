@@ -43,7 +43,7 @@ describe('TagManager', () => {
 
   describe('TagManager._getScript', () => {
     it('should use the id, auth and preview', () => {
-      const script1 = TagManager._getScript({ gtmId: MOCK_ID, auth: MOCK_AUTH, preview: MOCK_PREVIEW })
+      const script1 = TagManager._getScript({ gtmId: MOCK_ID, _auth: MOCK_AUTH, _preview: MOCK_PREVIEW })
 
       expect(script1.innerHTML).toContain(MOCK_ID)
       expect(script1.innerHTML).toContain(`&gtm_auth=${MOCK_AUTH}`)
@@ -54,7 +54,7 @@ describe('TagManager', () => {
 
   describe('TagManager.initialize', () => {
     it('should initialize TagManager', () => {
-      TagManager.initialize({ gtmId: MOCK_ID, auth: MOCK_AUTH, preview: MOCK_PREVIEW })
+      TagManager.initialize({ gtmId: MOCK_ID, _auth: MOCK_AUTH, _preview: MOCK_PREVIEW })
 
       expect(document.head.childNodes).toHaveLength(2)
 
@@ -66,7 +66,7 @@ describe('TagManager', () => {
 
       // Manually added script
       expect(document.head.childNodes[1]).toStrictEqual(
-        TagManager._getScript({ gtmId: MOCK_ID, auth: MOCK_AUTH, preview: MOCK_PREVIEW }),
+        TagManager._getScript({ gtmId: MOCK_ID, _auth: MOCK_AUTH, _preview: MOCK_PREVIEW }),
       )
 
       expect(window.dataLayer).toHaveLength(3)
@@ -95,8 +95,8 @@ describe('TagManager', () => {
 
       TagManager.initialize({
         gtmId: MOCK_ID,
-        auth: MOCK_AUTH,
-        preview: MOCK_PREVIEW,
+        _auth: MOCK_AUTH,
+        _preview: MOCK_PREVIEW,
       })
 
       expect(window.dataLayer).toHaveLength(3)
@@ -114,8 +114,8 @@ describe('TagManager', () => {
     it('should remove GA cookies and reload', () => {
       TagManager.initialize({
         gtmId: MOCK_ID,
-        auth: MOCK_AUTH,
-        preview: MOCK_PREVIEW,
+        _auth: MOCK_AUTH,
+        _preview: MOCK_PREVIEW,
       })
 
       document.cookie = '_ga=GA123;'
@@ -143,8 +143,8 @@ describe('TagManager', () => {
 
       TagManager.initialize({
         gtmId: MOCK_ID,
-        auth: MOCK_AUTH,
-        preview: MOCK_PREVIEW,
+        _auth: MOCK_AUTH,
+        _preview: MOCK_PREVIEW,
       })
 
       expect(window.dataLayer).toHaveLength(3)

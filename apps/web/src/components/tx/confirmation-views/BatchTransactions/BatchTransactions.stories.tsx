@@ -23,7 +23,7 @@ const meta = {
             },
           }}
         >
-          <ThemeProvider theme={createSafeTheme('dark')}>
+          <ThemeProvider theme={createSafeTheme()}>
             <Paper sx={{ padding: 2 }}>
               <Story />
             </Paper>

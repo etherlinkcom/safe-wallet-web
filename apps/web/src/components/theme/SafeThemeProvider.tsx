@@ -13,7 +13,7 @@ type SafeThemeProviderProps = {
 }
 
 const SafeThemeProvider: FC<SafeThemeProviderProps> = ({ children, mode }) => {
-  const theme = useMemo(() => createSafeTheme(mode), [mode])
+  const theme = useMemo(() => createSafeTheme(), [mode])
 
   return <ThemeProvider theme={theme}>{children(theme)}</ThemeProvider>
 }

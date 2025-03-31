@@ -1,4 +1,4 @@
-import type { Theme, PaletteMode } from '@mui/material'
+import type { Theme } from '@mui/material'
 import { alpha } from '@mui/material'
 import type { Shadows } from '@mui/material/styles'
 import { createTheme } from '@mui/material/styles'
@@ -67,7 +67,7 @@ declare module '@mui/material/IconButton' {
   }
 }
 
-const createSafeTheme = (_mode: PaletteMode): Theme => {
+const createSafeTheme = (): Theme => {
   const isDarkMode = true // mode === 'dark'
   const colors = isDarkMode ? darkPalette : palette
   const shadowColor = colors.primary.light

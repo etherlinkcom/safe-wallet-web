@@ -15,7 +15,7 @@ const DATA_LAYER_NAME = 'dataLayer'
 
 const TagManager = {
   // `jest.spyOn` is not possible if outside of `TagManager`
-  _getScript: ({ gtmId, _auth, _preview }: TagManagerArgs) => {
+  _getScript: ({ gtmId }: TagManagerArgs) => {
     const script = document.createElement('script')
 
     const gtmScript = `
