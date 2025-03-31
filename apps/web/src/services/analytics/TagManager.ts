@@ -6,16 +6,16 @@ export type TagManagerArgs = {
   // GTM id, e.g. GTM-000000
   gtmId: string
   // GTM authentication key
-  auth?: string
+  _auth?: string
   // GTM environment, e.g. env-00.
-  preview?: string
+  _preview?: string
 }
 
 const DATA_LAYER_NAME = 'dataLayer'
 
 const TagManager = {
   // `jest.spyOn` is not possible if outside of `TagManager`
-  _getScript: ({ gtmId, auth, preview }: TagManagerArgs) => {
+  _getScript: ({ gtmId, _auth, _preview }: TagManagerArgs) => {
     const script = document.createElement('script')
 
     const gtmScript = `

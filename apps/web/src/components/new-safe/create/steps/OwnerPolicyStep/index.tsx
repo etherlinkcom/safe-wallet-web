@@ -41,7 +41,7 @@ const OwnerPolicyStep = ({
 }): ReactElement => {
   const wallet = useWallet()
   const addressBook = useAddressBook()
-  const isCounterfactualEnabled = useHasFeature(FEATURES.COUNTERFACTUAL)
+  //const isCounterfactualEnabled = useHasFeature(FEATURES.COUNTERFACTUAL)
   const defaultOwnerAddressBookName = wallet?.address ? addressBook[wallet.address] : undefined
   const defaultOwner: NamedAddress = {
     name: defaultOwnerAddressBookName || wallet?.ens || '',

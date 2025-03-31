@@ -24,7 +24,7 @@ const SidebarFooter = (): ReactElement => {
     }
   }, [hasBeamerConsent, chain?.shortName])
 
-  const handleBeamer = () => {
+  const _handleBeamer = () => {
     if (!hasBeamerConsent) {
       dispatch(openCookieBanner({ warningKey: CookieAndTermType.UPDATES }))
     }

@@ -15,7 +15,7 @@ import { BRAND_NAME } from '@/config/constants'
 const Appearance: NextPage = () => {
   const dispatch = useAppDispatch()
   const settings = useAppSelector(selectSettings)
-  const isDarkMode = useDarkMode()
+  const _isDarkMode = useDarkMode()
 
   const handleToggle = (
     action: typeof setCopyShortName | typeof setDarkMode,
@@ -95,18 +95,18 @@ const Appearance: NextPage = () => {
               </Typography>
             </Grid>
 
-            <Grid item xs>
+            {/* <Grid item xs>
               <FormControlLabel
                 control={
                   <Switch
-                    checked={isDarkMode}
+                    checked={_isDarkMode}
                     onChange={handleToggle(setDarkMode, SETTINGS_EVENTS.APPEARANCE.DARK_MODE)}
                   />
                 }
                 label="Dark mode"
               />
-            </Grid>
-          </Grid> */}
+            </Grid> */}
+          </Grid>
         </Paper>
       </main>
     </>

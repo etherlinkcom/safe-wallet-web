@@ -32,11 +32,11 @@ import { useShowNotificationsRenewalMessage } from '@/components/settings/PushNo
 const NOTIFICATION_CENTER_LIMIT = 4
 
 const NotificationCenter = (): ReactElement => {
-  const router = useRouter()
+  const _router = useRouter()
   const [showAll, setShowAll] = useState<boolean>(false)
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null)
   const open = Boolean(anchorEl)
-  const hasPushNotifications = useHasFeature(FEATURES.PUSH_NOTIFICATIONS)
+  const _hasPushNotifications = useHasFeature(FEATURES.PUSH_NOTIFICATIONS)
   const dispatch = useAppDispatch()
 
   // This hook is used to show the notification renewal message when the app is opened
@@ -92,7 +92,7 @@ const NotificationCenter = (): ReactElement => {
     dispatch(deleteAllNotifications())
   }
 
-  const onSettingsClick = () => {
+  const _onSettingsClick = () => {
     setTimeout(handleClose, 300)
   }
 

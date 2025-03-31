@@ -53,19 +53,10 @@ export const FallbackHandler = (): ReactElement | null => {
   const hasFallbackHandler = !!safe.fallbackHandler
 
   const warning = !hasFallbackHandler ? (
-    <>
-      The Etherlink Safe may not work correctly as no fallback handler is currently set.
-      {txBuilder && (
-        <>
-          {' '}
-          It can be set via the{' '}
-          <NextLink href={txBuilder.link} passHref legacyBehavior>
-            <Link>Transaction Builder</Link>
-          </NextLink>
-          .
-        </>
-      )}
-    </>
+    <FallbackHandlerWarning
+      message={`The ${BRAND_NAME} may not work correctly as no fallback handler is currently set.`}
+      txBuilderLinkPrefix="It can be set via the"
+    />
   ) : isTWAPFallbackHandler ? (
     <>This is CoW&apos;s fallback handler. It is needed for this Safe to be able to use the TWAP feature for Swaps.</>
   ) : !isOfficial ? (

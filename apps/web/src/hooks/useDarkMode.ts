@@ -12,7 +12,7 @@ export const useDarkMode = (): boolean => {
   const [isDarkMode, setIsDarkMode] = useState<boolean>(false)
 
   useEffect(() => {
-    const isDark = settings.theme.darkMode ?? isSystemDarkMode()
+    const _isDark = settings.theme.darkMode ?? isSystemDarkMode()
 
     setIsDarkMode(true)
     document.documentElement.setAttribute('data-theme', 'dark')

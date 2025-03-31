@@ -25,20 +25,20 @@ import { AppRoutes } from '@/config/routes'
 import packageJson from '../../../package.json'
 
 type GTMEnvironment = 'LIVE' | 'LATEST' | 'DEVELOPMENT'
-type GTMEnvironmentArgs = Required<Pick<TagManagerArgs, 'auth' | 'preview'>>
+type GTMEnvironmentArgs = Required<Pick<TagManagerArgs, '_auth' | '_preview'>>
 
-const GTM_ENV_AUTH: Record<GTMEnvironment, GTMEnvironmentArgs> = {
+const _GTM_ENV_AUTH: Record<GTMEnvironment, GTMEnvironmentArgs> = {
   LIVE: {
-    auth: GOOGLE_TAG_MANAGER_AUTH_LIVE,
-    preview: 'env-1',
+    _auth: GOOGLE_TAG_MANAGER_AUTH_LIVE,
+    _preview: 'env-1',
   },
   LATEST: {
-    auth: GOOGLE_TAG_MANAGER_AUTH_LATEST,
-    preview: 'env-2',
+    _auth: GOOGLE_TAG_MANAGER_AUTH_LATEST,
+    _preview: 'env-2',
   },
   DEVELOPMENT: {
-    auth: GOOGLE_TAG_MANAGER_DEVELOPMENT_AUTH,
-    preview: 'env-3',
+    _auth: GOOGLE_TAG_MANAGER_DEVELOPMENT_AUTH,
+    _preview: 'env-3',
   },
 }
 
