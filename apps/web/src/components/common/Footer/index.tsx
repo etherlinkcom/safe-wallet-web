@@ -82,18 +82,20 @@ const Footer = (): ReactElement | null => {
             <SvgIcon component={GitHubIcon} inheritViewBox fontSize="inherit" sx={{ mr: 0.5 }} /> v{packageJson.version}
           </ExternalLink>
         </li>
-        <Typography variant="caption">
-          Supported by{' '}
-          <SvgIcon
-            component={ProtofireLogo}
-            inheritViewBox
-            fontSize="small"
-            sx={{ verticalAlign: 'middle', mx: 0.5 }}
-          />
-          <ExternalLink href="https://protofire.io" sx={{ color: darkPalette.primary.main, textDecoration: 'none' }}>
-            Protofire
-          </ExternalLink>
-        </Typography>
+        <li>
+          <Typography variant="caption">
+            Supported by{' '}
+            <SvgIcon
+              component={ProtofireLogo}
+              inheritViewBox
+              fontSize="small"
+              sx={{ verticalAlign: 'middle', mx: 0.5 }}
+            />
+            <ExternalLink href="https://protofire.io" sx={{ color: darkPalette.primary.main, textDecoration: 'none' }}>
+              Protofire
+            </ExternalLink>
+          </Typography>
+        </li>
       </ul>
     </footer>
   )
