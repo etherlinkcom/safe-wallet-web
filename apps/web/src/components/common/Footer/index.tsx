@@ -8,7 +8,7 @@ import { AppRoutes } from '@/config/routes'
 import packageJson from '../../../../package.json'
 import ExternalLink from '../ExternalLink'
 import MUILink from '@mui/material/Link'
-import { DISCORD_URL, TWITTER_URL } from '@/config/constants'
+import { DISCORD_URL, PROTOFIRE_SUPPORT_LINK, TWITTER_URL } from '@/config/constants'
 //import { useIsOfficialHost } from '@/hooks/useIsOfficialHost'
 import ProtofireLogo from '@/public/images/protofire-logo.svg'
 //import TwitterIcon from '@mui/icons-material/Twitter'
@@ -59,6 +59,9 @@ const Footer = (): ReactElement | null => {
     <footer className={css.container}>
       <ul>
         <li>
+          <Typography variant="caption">&copy;{new Date().getFullYear()} Etherlink Safe</Typography>
+        </li>
+        <li>
           <FooterLink href={getHref(AppRoutes.terms)}>Terms</FooterLink>
         </li>
         <li>
@@ -76,6 +79,11 @@ const Footer = (): ReactElement | null => {
         </li>
         <li>
           <FooterLink href={getHref(AppRoutes.settings.index)}>Preferences</FooterLink>
+        </li>
+        <li>
+          <ExternalLink href={PROTOFIRE_SUPPORT_LINK} noIcon sx={{ span: { textDecoration: 'underline' } }}>
+            Help
+          </ExternalLink>
         </li>
         <li>
           <ExternalLink href={`${packageJson.homepage}/releases/tag/v${packageJson.version}`} noIcon>
