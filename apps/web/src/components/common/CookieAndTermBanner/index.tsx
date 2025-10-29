@@ -45,6 +45,7 @@ export const CookieAndTermBanner = ({
   const dispatch = useAppDispatch()
   const cookies = useAppSelector(selectCookies)
 
+  // eslint-disable-next-line unused-imports/no-unused-vars
   const { register, watch, getValues, setValue } = useForm({
     defaultValues: {
       [CookieAndTermType.TERMS]: true,
@@ -66,11 +67,11 @@ export const CookieAndTermBanner = ({
     dispatch(closeCookieBanner())
   }
 
-  const handleAcceptAll = () => {
-    setValue(CookieAndTermType.UPDATES, true)
-    setValue(CookieAndTermType.ANALYTICS, true)
-    setTimeout(handleAccept, 300)
-  }
+  // const handleAcceptAll = () => {
+  //   setValue(CookieAndTermType.UPDATES, true)
+  //   setValue(CookieAndTermType.ANALYTICS, true)
+  //   setTimeout(handleAccept, 300)
+  // }
 
   return (
     <Paper data-testid="cookies-popup" className={classnames(css.container, { [css.inverted]: inverted })}>
@@ -125,7 +126,7 @@ export const CookieAndTermBanner = ({
                   />
                   <br />
                   <Typography variant="body2">New features and product announcements</Typography>
-                </Box> */}
+                </Box>
 
                 <Box>
                   <CookieCheckbox
@@ -137,7 +138,7 @@ export const CookieAndTermBanner = ({
                   <Typography variant="body2">
                     Opt in for Google Analytics cookies to help us analyze app usage patterns.
                   </Typography>
-                </Box>
+                </Box> */}
               </Grid>
             </Grid>
 
@@ -158,11 +159,11 @@ export const CookieAndTermBanner = ({
                 </Typography>
               </Grid>
 
-              <Grid item>
+              {/* <Grid item>
                 <Button onClick={handleAcceptAll} variant="contained" color="secondary" size="small" disableElevation>
                   Accept all
                 </Button>
-              </Grid>
+              </Grid> */}
             </Grid>
           </Grid>
         </Grid>
