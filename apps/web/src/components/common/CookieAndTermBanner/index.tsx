@@ -5,6 +5,8 @@ import { Grid, Button, Checkbox, FormControlLabel, Typography, Paper, SvgIcon, B
 import WarningIcon from '@/public/images/notifications/warning.svg'
 import { useForm } from 'react-hook-form'
 import * as metadata from '@/markdown/terms/version'
+import { AppRoutes } from '@/config/routes'
+import ExternalLink from '../ExternalLink'
 
 import { useAppDispatch, useAppSelector } from '@/store'
 import {
@@ -96,8 +98,11 @@ export const CookieAndTermBanner = ({
         >
           <Grid item xs>
             <Typography variant="body2" mb={2}>
-              By clicking &quot;Accept all&quot; you agree to the use of the tools listed below and their corresponding
-              cookies.
+              {/* By clicking &quot;Accept all&quot; you agree to the use of the tools listed below and their corresponding
+              cookies. */}
+              By browsing this page, you accept our{' '}
+              <ExternalLink href={AppRoutes.terms}>Terms & Conditions</ExternalLink> and the use of necessary cookies.{' '}
+              <ExternalLink href={AppRoutes.cookie}>Cookie policy</ExternalLink>
             </Typography>
 
             <Grid
