@@ -1,11 +1,10 @@
-import { Checkbox, FormControlLabel, FormGroup, Grid, Paper, Typography } from '@mui/material'
+import { Checkbox, FormControlLabel, FormGroup, Grid, Paper, Switch, Typography } from '@mui/material'
 import type { ChangeEvent } from 'react'
 import type { NextPage } from 'next'
 import Head from 'next/head'
 
 import { useAppDispatch, useAppSelector } from '@/store'
-import type { setDarkMode } from '@/store/settingsSlice'
-import { selectSettings, setCopyShortName } from '@/store/settingsSlice'
+import { selectSettings, setCopyShortName, setDarkMode } from '@/store/settingsSlice'
 import SettingsHeader from '@/components/settings/SettingsHeader'
 import { trackEvent, SETTINGS_EVENTS } from '@/services/analytics'
 import { useDarkMode } from '@/hooks/useDarkMode'
@@ -15,7 +14,7 @@ import { BRAND_NAME } from '@/config/constants'
 const Appearance: NextPage = () => {
   const dispatch = useAppDispatch()
   const settings = useAppSelector(selectSettings)
-  const _isDarkMode = useDarkMode()
+  const isDarkMode = useDarkMode()
 
   const handleToggle = (
     action: typeof setCopyShortName | typeof setDarkMode,
@@ -95,17 +94,17 @@ const Appearance: NextPage = () => {
               </Typography>
             </Grid>
 
-            {/* <Grid item xs>
+            <Grid item xs>
               <FormControlLabel
                 control={
                   <Switch
-                    checked={_isDarkMode}
+                    checked={isDarkMode}
                     onChange={handleToggle(setDarkMode, SETTINGS_EVENTS.APPEARANCE.DARK_MODE)}
                   />
                 }
                 label="Dark mode"
               />
-            </Grid> */}
+            </Grid>
           </Grid>
         </Paper>
       </main>
