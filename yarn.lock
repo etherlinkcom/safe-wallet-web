@@ -13736,12 +13736,14 @@ __metadata:
     react-dom: "npm:19.1.0"
     react-dropzone: "npm:^14.2.3"
     react-hook-form: "npm:7.41.1"
+    react-markdown: "npm:^10.1.0"
     react-papaparse: "npm:^4.0.2"
     react-redux: "npm:^9.1.2"
     remark-frontmatter: "npm:^5.0.0"
     remark-gfm: "npm:^4.0.0"
     remark-heading-id: "npm:^1.0.1"
     remark-mdx-frontmatter: "npm:^5.2.0"
+    safe-network-config: "git@github.com:protofire/safe-network-config.git"
     semver: "npm:^7.7.1"
     storybook: "npm:^10.2.7"
     ts-prune: "npm:^0.10.3"
@@ -28728,6 +28730,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"html-url-attributes@npm:^3.0.0":
+  version: 3.0.1
+  resolution: "html-url-attributes@npm:3.0.1"
+  checksum: 10/494074c2f730c5c0e517aa1b10111fb36732534a2d2b70427582c4a615472b47da472cf3a17562cc653826d378d20960f2783e0400f4f7cf0c3c2d91c6188d13
+  languageName: node
+  linkType: hard
+
 "html-webpack-plugin@npm:^5.5.0":
   version: 5.6.3
   resolution: "html-webpack-plugin@npm:5.6.3"
@@ -37184,6 +37193,28 @@ __metadata:
   languageName: node
   linkType: hard
 
+"react-markdown@npm:^10.1.0":
+  version: 10.1.0
+  resolution: "react-markdown@npm:10.1.0"
+  dependencies:
+    "@types/hast": "npm:^3.0.0"
+    "@types/mdast": "npm:^4.0.0"
+    devlop: "npm:^1.0.0"
+    hast-util-to-jsx-runtime: "npm:^2.0.0"
+    html-url-attributes: "npm:^3.0.0"
+    mdast-util-to-hast: "npm:^13.0.0"
+    remark-parse: "npm:^11.0.0"
+    remark-rehype: "npm:^11.0.0"
+    unified: "npm:^11.0.0"
+    unist-util-visit: "npm:^5.0.0"
+    vfile: "npm:^6.0.0"
+  peerDependencies:
+    "@types/react": ">=18"
+    react: ">=18"
+  checksum: 10/886c037d18266e94750abbc00c6096435bccd4da5f2d1727984bcbdf83e9f2a5cc9a6b0eecfe6c30456dc26546fee41c7f6aecbf176e6d7453963df4abefd7df
+  languageName: node
+  linkType: hard
+
 "react-media@npm:^1.10.0":
   version: 1.10.0
   resolution: "react-media@npm:1.10.0"
@@ -39126,6 +39157,13 @@ __metadata:
   version: 0.4.2
   resolution: "safe-identifier@npm:0.4.2"
   checksum: 10/c2697c0d2fe128aa5f5faa7bd3ccf02d06ba937cdff9b2f65afb247e222a1505fc414a3b6a04d2a6a71bb5a84b8bc345edc408fabc8afc498f04e367ddc02366
+  languageName: node
+  linkType: hard
+
+"safe-network-config@git@github.com:protofire/safe-network-config.git":
+  version: 1.0.6
+  resolution: "safe-network-config@git@github.com:protofire/safe-network-config.git#commit=cc6825073ebc61a3256a214f1906c1beb44e938c"
+  checksum: 10/9d00a3a4b2cc0169fac45c11d87fef29485cb3e62a9fae7519e93141401000e69232e0a67a5bffa4be80805c853188c6dbd1c21b12f2a2f5ee5f0f047409c060
   languageName: node
   linkType: hard
 
